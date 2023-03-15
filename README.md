@@ -11,7 +11,7 @@ The script expects each log line to have a `module`, `timestamp`, and `message` 
 You can use the following options to filter logs:
 
 ```
-Usage: index [options] [input-files...]
+Usage: rjl [options] [input-files...]
 
 Arguments:
   input-files                The files to process
