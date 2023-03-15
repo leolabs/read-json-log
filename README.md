@@ -18,6 +18,7 @@ Arguments:
   input-files                The files to process
 
 Options:
+  -l, --level <level>        Only shows logs with the given level (default: [])
   -s, --start-date <date>    Filters out all logs before this date
   -e, --end-date <date>      Filters out all logs after this date
   -m, --module <module>      Only shows logs from the given module (default: [])

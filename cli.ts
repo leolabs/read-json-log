@@ -14,6 +14,12 @@ program
   .name("rjl")
   .argument("[input-files...]", "The files to process")
   .option(
+    "-l, --level <level>",
+    "Only shows logs with the given level",
+    (m, p: string[]) => p.concat([m]),
+    []
+  )
+  .option(
     "-s, --start-date <date>",
     "Filters out all logs before this date",
     (d) => new Date(d).getTime()
@@ -48,6 +54,7 @@ let prevTime: number | null = null;
 interface Options {
   startDate: number;
   endDate: number;
+  level: string[];
   module: string[];
   notModule: string[];
   filter: string[];
@@ -112,6 +119,10 @@ const processLine = (
   const { module, level, message, timestamp, ...data } = line;
   const logTime = new Date(timestamp).getTime();
   const lowerCaseMessage = message.toLowerCase();
+
+  if (options.level.length && !options.level.includes(level)) {
+    return;
+  }
 
   if (options.module.length && !options.module.includes(module)) {
     return;
