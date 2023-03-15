@@ -190,6 +190,7 @@ const processLine = (
   const dataString = JSON.stringify(displayData, null, 2)
     .split("\n")
     .slice(1, -1)
+    .map(colors.gray)
     .join("\n");
 
   if (indexText) {
@@ -199,7 +200,7 @@ const processLine = (
   }
 
   if (dataString) {
-    console.log(colors.gray(dataString));
+    console.log(dataString);
   }
 
   console.log();
@@ -265,7 +266,11 @@ program.action(async (inputPaths, options: Options) => {
         throw new Error("No line found");
       }
 
-      processLine(earliestLine[1], options, earliestLine[0]);
+      processLine(
+        earliestLine[1],
+        options,
+        contents.length > 1 ? earliestLine[0] : undefined
+      );
       pointers[earliestLine[0]]++;
     }
   } else {
