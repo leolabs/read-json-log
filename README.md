@@ -24,3 +24,12 @@ Options:
   -f, --filter <message>     Filters out logs where the message contains the given string (default: [])
   -h, --help                 display help for command
 ```
+
+## Installing RJL
+
+RJL requires [Deno](https://deno.land) to be installed. You can then use
+the following command to install the script:
+
+```sh
+deno install --allow-read https://deno.land/x/rjl/rjl.ts
+```
