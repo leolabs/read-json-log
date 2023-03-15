@@ -11,6 +11,7 @@ const colorMap: Record<string, (msg: string) => string> = {
 };
 
 program
+  .name("rjl")
   .argument("[input-files...]", "The files to process")
   .option(
     "-s, --start-date <date>",
@@ -24,13 +25,13 @@ program
   )
   .option(
     "-m, --module <module>",
-    "Only shows logs from the given module, can be used multiple times",
+    "Only shows logs from the given module",
     (m, p: string[]) => p.concat([m]),
     []
   )
   .option(
     "-n, --not-module <module>",
-    "Only shows logs from the given module, can be used multiple times",
+    "Hides logs from the given module",
     (m, p: string[]) => p.concat([m]),
     []
   )
@@ -254,4 +255,6 @@ program.action(async (inputPaths, options: Options) => {
   }
 });
 
-program.parse();
+if (import.meta.main) {
+  program.parse();
+}
