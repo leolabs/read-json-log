@@ -24,6 +24,7 @@ Options:
   -m, --module <module>      Only shows logs from the given module (default: [])
   -n, --not-module <module>  Hides logs from the given module (default: [])
   -f, --filter <message>     Filters out logs where the message contains the given string (default: [])
+  --shallow                  Only show the first level of data keys
   -h, --help                 display help for command
 ```
 

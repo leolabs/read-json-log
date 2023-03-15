@@ -46,18 +46,20 @@ program
     "Filters out logs where the message contains the given string",
     (m, p: string[]) => p.concat([m.toLowerCase()]),
     []
-  );
+  )
+  .option("--shallow", "Only show the first level of data keys");
 
 /** Used for calculating the time difference between log lines */
 let prevTime: number | null = null;
 
 interface Options {
-  startDate: number;
-  endDate: number;
+  startDate?: number;
+  endDate?: number;
   level: string[];
   module: string[];
   notModule: string[];
   filter: string[];
+  shallow: boolean;
 }
 
 interface Line {
@@ -166,7 +168,26 @@ const processLine = (
   const prefix = (colorMap[level] ?? colors.reset)(`[${module ?? level}]`);
   const timestampText = colors.gray(`[${timestamp}]`);
 
-  const dataString = JSON.stringify(data, null, 2)
+  const displayData = options.shallow
+    ? Object.fromEntries(
+        Object.entries(data).map(([k, v]) => {
+          if (typeof v === "object") {
+            const keyCount = Object.keys(v).length;
+            if (keyCount > 0) {
+              return [k, `[object with ${keyCount} keys]`];
+            } else {
+              return [k, `[empty object]`];
+            }
+          } else if (Array.isArray(v)) {
+            return [k, `[array with ${v.length} items]`];
+          } else {
+            return [k, v];
+          }
+        })
+      )
+    : data;
+
+  const dataString = JSON.stringify(displayData, null, 2)
     .split("\n")
     .slice(1, -1)
     .join("\n");
@@ -204,6 +225,8 @@ const readFiles = async (inputPaths: string[]) => {
 };
 
 program.action(async (inputPaths, options: Options) => {
+  console.log("Options:", options);
+
   if (inputPaths.length) {
     const contents = await readFiles(inputPaths);
 
